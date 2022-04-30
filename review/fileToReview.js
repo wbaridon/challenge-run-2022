@@ -1,3 +1,4 @@
+// TODO: review
 
 var domain = "bank.local.fr"
 
