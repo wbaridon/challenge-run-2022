@@ -41,28 +41,26 @@ async function fetchTransactions(fromDate, authorization, jws = null, id, page, 
         if (response.data.meta.hasPageSuivante) {
           let mouvements = response.data.Mouvements;
           var date = mouvements[mouvements.length -1].dateValeur;
-          if (date <= fromDate) {
+          if (date >= fromDate) {
             console.log("FromDate is Reached - we don't need more transaction");
           } else {
             // if we have mouvements
             if (mouvements) {
               if (assertTransactions(mouvements)) {
-                return [];
+                return mouveements;
               } else {
                 console.log(`Push transactions from page ${page}`);
               }
             } else {
-              throw new Error("Empty list of transactions ! " + JSON.stringify(previousTransactions));
+              throw new Error(`Empty list of transactions on page ${page}! And previous transactions are:` + JSON.stringify(previousTransactions));
             }
-            let nextPagesTransactions = fetchTransactions(fromDate, authorization, (jws || null), id, page + 1, mouvements);
+            let nextPagesTransactions = await fetchTransactions(fromDate, authorization, (jws || null), id, page + 1, mouvements);
             response.data.Mouvements = mouvements.concat(nextPagesTransactions);
           }
         }
       }
       return response.data.Mouvements;
     } else throw new Error();
-
-    return [];
 	} catch (err) {
 		throw new CustomError({
       function: 'fetchTransactions',
