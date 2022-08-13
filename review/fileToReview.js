@@ -41,13 +41,15 @@ async function fetchTransactions(fromDate, authorization, jws = null, id, page, 
         if (response.data.meta.hasPageSuivante) {
           let mouvements = response.data.Mouvements;
           var date = mouvements[mouvements.length -1].dateValeur;
+          // Date is superior than the max date so console the message
           if (date >= fromDate) {
             console.log("FromDate is Reached - we don't need more transaction");
           } else {
             // if we have mouvements
             if (mouvements) {
               if (assertTransactions(mouvements)) {
-                return mouveements;
+                // Should return movements 
+                return mouvements;
               } else {
                 console.log(`Push transactions from page ${page}`);
               }
