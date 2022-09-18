@@ -1,4 +1,4 @@
-
+// code has been reveiwed by Daoud Babaammi for the test
 var domain = "bank.local.fr"
 
 /**
